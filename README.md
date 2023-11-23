@@ -6,6 +6,12 @@ This repository contains files which I created for the third assignment ("Assign
 
 The Shiny app which I created is hosted on [shinyapps.io](https://www.shinyapps.io/), and my Shiny app is called [Central Limit Theorem Simulator](https://hotz1.shinyapps.io/assignment-b3-hotz1/).
 
+## What does the Shiny app do?
+
+The Shiny app which is created from the R scripts in this repository allows users to view a histogram of simulated sample means of three common continuous probability distributions; the Beta Distribution, the Gamma Distribution, and the Normal Distribution.
+
+The Shiny app is highly interactive, as it allows users to change the sampling distribution, the size of the samples, the number of simulated sample means, and the colours of the histogram. Additionally, the app has a "re-simulate" button which re-runs all of the code to generate a new sample and a new histogram, and a button which allows users to download the generated histogram locally as a PNG file.
+
 ## What are the files and folders in this repository?
 
 This repository contains three R script (`.R`) files, a Markdown (`.md`) file, and one gitignore file. You are free to view the files in the repository if you wish, but it is recommended to look at these files with the Shiny app open so you can understand how the code in these scripts effect the app's outputs and features.

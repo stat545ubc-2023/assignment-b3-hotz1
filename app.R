@@ -121,7 +121,13 @@ ui <- fluidPage(theme = shinytheme("flatly"),
         value = 30, 
         min = 10, 
         max = 60
-      )
+      ),
+      
+      # Display help text + information for the users
+      helpText('Note: The sample data and histogram will not change unless the 
+               \"Re-simulate the data\" button is clicked. You can also click
+               this button to generate a new dataset of sample means based on
+               the same set of parameters.')
     ),
     
     # Code for the main panel
