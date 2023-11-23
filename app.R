@@ -15,6 +15,12 @@ ui <- fluidPage(theme = shinytheme("flatly"),
     # Sidebar panel for the user to input their desired values
     sidebarPanel(
       
+      # FEATURE 1: Dropdown menu with conditional panels
+      # The dropdown menu is useful because it allows the user to select which 
+      # probability distribution they would like to draw their sample means
+      # from, and the conditional panels let the user easily edit the 
+      # parameters of their specified distribution.
+      
       # Let the user choose a probability distribution
       selectInput(
         inputId = "distribution", 
@@ -22,7 +28,7 @@ ui <- fluidPage(theme = shinytheme("flatly"),
         choices = c("Beta", "Gamma", "Normal")
       ),
       
-      # # Let the user choose the parameters of the Beta distribution
+      # Let the user choose the parameters of the Beta distribution
       conditionalPanel(
         condition = "input.distribution == 'Beta'",
         numericInput("param_1",
@@ -60,6 +66,13 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                      min = 0)
       ),
       
+      # FEATURE 2: Numeric inputs
+      # The numeric inputs for sample size and the number of simulations are
+      # the primary features for this program. The purpose of this Shiny app
+      # is to let the users easily simulate the sample means from a specified
+      # sampling distribution and plot these sample means on a histogram, so
+      # these inputs are the most important variables in the applet.
+      
       # Lets the user change the sample size
       numericInput(
         inputId = "sample_size",
@@ -78,6 +91,11 @@ ui <- fluidPage(theme = shinytheme("flatly"),
         max = 10000,
         step = 100
       ),
+      
+      # FEATURE 3: Colour selection menus
+      # The three colour selection menus which are included in the app (and the
+      # numeric input for the number of bins) allow users to easily customize
+      # the histogram based on their own personal preferences. 
 
       # Lets the user change the colours in the histogram
       colourpicker::colourInput(
@@ -113,13 +131,33 @@ ui <- fluidPage(theme = shinytheme("flatly"),
           from that distribution converges to a Normal distribution."),
       h5("Using this tool, we can empirically look at this convergence in
          distribution."),
+      
+      # Show the histogram of the sample means
       plotOutput(outputId = "means_plot"),
+      
+      # FEATURE 4: Clickable button to re-generate the sample data
+      # The Shiny applet contains an eventReactive function which ensures that
+      # the sample means which are plotted in the histogram (and the histogram 
+      # itself) are only re-created when this button is clicked instead of 
+      # whenever a change is made. This feature ensures that users can change
+      # more than one parameter at once and helps to cut down on how frequently
+      # the dataset is simulated, which reduces computational costs.
+      
       # Button to click to resample the data 
       actionButton(
         inputId = "resample_data", 
         label = "Re-simulate the data",
         icon = icon(name = "refresh", lib = "glyphicon")
       ),
+      
+      # FEATURE 5: Clickable button to download the displayed histogram
+      # The Shiny applet contains an eventReactive function which ensures that
+      # the download is only prompted when this button is clicked. This 
+      # download feature is useful because it allows users to have access to
+      # the plots without being connected to the Shiny app server, and it also
+      # can be used to visually compare the histograms of sample means which
+      # are generated under different parameters, such as the sample size.
+      
       # Button to click which lets the user download the plot 
       downloadButton(
         outputId = "download_plot",
@@ -166,11 +204,12 @@ server <- function(input, output){
   # Renders + displays the plot in the Shiny app
   output$means_plot <- renderPlot({plot_hist()})
   
-  # Code for the "download plot" button
+  # Downloads the plot which is displayed in the app
   output$download_plot <- downloadHandler(
     filename = "sample_means.png",
     content = function(file){
-      ggsave(file, plot = plot_hist(), device = "png")
+      ggsave(file, plot = plot_hist(), width = 10, height = 6, 
+             units = "in", device = "png")
     }
   )
 }
